@@ -1,0 +1,7 @@
+Listing Users
+</br>
+
+<%= for user <- @users do %>
+
+<%= first_name(user) %> (<%= user.id %>)	<%= link "View", to: Routes.user_path(@conn, :show, user.id) %> </br>
+<% end %>
