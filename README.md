@@ -6,6 +6,9 @@ mix ecto.create
 mix phx.server
 
 iex -S mix phx.server
+iex -S mix
+
+mix ecto.gen.migration create_users
 
 # Rumbl
 
