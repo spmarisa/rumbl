@@ -1,3 +1,11 @@
+#---
+# Excerpted from "Programming Phoenix 1.4",
+# published by The Pragmatic Bookshelf.
+# Copyrights apply to this code. It may not be used to create training material,
+# courses, books, articles, and the like. Contact us if you are in doubt.
+# We make no guarantees that this code is fit for any purpose.
+# Visit http://www.pragmaticprogrammer.com/titles/phoenix14 for more book information.
+#---
 defmodule RumblWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
@@ -23,30 +31,34 @@ defmodule RumblWeb do
 
       import Plug.Conn
       import RumblWeb.Gettext
+      import RumblWeb.Auth, only: [authenticate_user: 2] # New import
       alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
-      use Phoenix.View,
-        root: "lib/rumbl_web/templates",
-        namespace: RumblWeb
+      use Phoenix.View, root: "lib/rumbl_web/templates",
+                        namespace: RumblWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
-      # Include shared imports and aliases for views
-      unquote(view_helpers())
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
+      import RumblWeb.ErrorHelpers
+      import RumblWeb.Gettext
+      alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
   def router do
     quote do
       use Phoenix.Router
-
       import Plug.Conn
       import Phoenix.Controller
+      import RumblWeb.Auth, only: [authenticate_user: 2] # New import
     end
   end
 
@@ -54,20 +66,6 @@ defmodule RumblWeb do
     quote do
       use Phoenix.Channel
       import RumblWeb.Gettext
-    end
-  end
-
-  defp view_helpers do
-    quote do
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
-      import RumblWeb.ErrorHelpers
-      import RumblWeb.Gettext
-      alias RumblWeb.Router.Helpers, as: Routes
     end
   end
 
